@@ -1,0 +1,1 @@
+Cavalry is a fork of the popular VEX V5 template LemLib. It extends LemLib's functionality by adding a particle filter and making other minor improvements. Cavalry was designed, built, and programmed by VEX Team 169A. 

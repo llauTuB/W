@@ -1,0 +1,25 @@
+#pragma once
+
+// MCL constants
+extern int NUM_PARTICLES;
+
+extern float DISTANCE_RIGHT_CONSTANT;
+extern float DISTANCE_LEFT_CONSTANT;
+extern float DISTANCE_FRONT_CONSTANT;
+extern float DISTANCE_BACK_CONSTANT;
+
+extern float DISTANCE_RIGHT_OFFSET_X;
+extern float DISTANCE_RIGHT_OFFSET_Y;
+extern float DISTANCE_RIGHT_OFFSET_T;
+
+extern float DISTANCE_LEFT_OFFSET_X;
+extern float DISTANCE_LEFT_OFFSET_Y;
+extern float DISTANCE_LEFT_OFFSET_T;
+
+extern float DISTANCE_FRONT_OFFSET_X;
+extern float DISTANCE_FRONT_OFFSET_Y;
+extern float DISTANCE_FRONT_OFFSET_T;
+
+extern float DISTANCE_BACK_OFFSET_X;
+extern float DISTANCE_BACK_OFFSET_Y;
+extern float DISTANCE_BACK_OFFSET_T;
