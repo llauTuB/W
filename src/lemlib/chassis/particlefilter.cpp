@@ -1,5 +1,7 @@
 #include "lemlib/chassis/particlefilter.hpp"
 #include <iostream>
+#include <cmath>
+#include <algorithm>
 
 namespace cavalry {
 
@@ -75,15 +77,13 @@ void ParticleFilter::update() {
         particles[i].second += noisyMotion.y;
     }
 
-    // // Estimate distance traveled using noisy motion to account for uncertainty
-    // const lemlib::Pose distanceApproximation = get_noisy_motion();
-    // distanceSinceLastUpdate += calculate_norm(distanceApproximation);
-    // timeSinceLastUpdate += pros::millis() - timeLastUpdate;
-    
+    // 1. Calculate true loop distance traveled
     float loopDistanceTraveled = std::hypot(deltaOdomVertical, deltaOdomHorizontal);
+    
     // 2. Accumulate the tiny distance deltas over time
     distanceSinceLastUpdate += loopDistanceTraveled;
-    // 3. Directly assign the total elapsed time (DO NOT use +=)
+    
+    // 3. Directly assign the total elapsed time
     timeSinceLastUpdate = pros::millis() - timeLastUpdate;
 
     // Only resample if enough distance or time has passed
@@ -112,8 +112,8 @@ void ParticleFilter::update() {
     // Weight particles based on sensor readings and move any particles out of field
     float weightSum = weight_particles(currentTheta);
 
-    if (weightSum == 0.0f) {
-        std::cerr << "All weights are ZERO" <<  std::endl;
+    if (weightSum <= 0.000001f) {
+        std::cerr << "All weights are near ZERO - skipping resample to avoid crash" << std::endl;
         return;
     }
 
@@ -181,36 +181,11 @@ bool ParticleFilter::is_enabled() {
     return this->enabled && this->is_initialized();
 }
 
-// void ParticleFilter::create_distributions(float deltaOdomVertical, float deltaOdomHorizontal, float currentTheta) {
-//     if (deltaOdomVertical == 0) {
-//         verticalDistribution = std::uniform_real_distribution<>(-settings.verticalNoise, settings.verticalNoise);
-//     }
-//     else {
-//         verticalDistribution = std::uniform_real_distribution<>(deltaOdomVertical - settings.verticalNoise * deltaOdomVertical, 
-//                                                             deltaOdomVertical + settings.verticalNoise * deltaOdomVertical);
-//     }
-
-//     if (deltaOdomHorizontal == 0) {
-//         horizontalDistribution = std::uniform_real_distribution<>(-settings.horizontalNoise, settings.horizontalNoise);
-//     }
-//     else {
-//         horizontalDistribution = std::uniform_real_distribution<>(deltaOdomHorizontal - settings.horizontalNoise * deltaOdomHorizontal, 
-//                                                             deltaOdomHorizontal + settings.horizontalNoise * deltaOdomHorizontal);
-//     }
-
-//     angularDistribution = std::uniform_real_distribution<>(currentTheta - settings.angularNoise, 
-//                                                         currentTheta + settings.angularNoise);
-// }
-
 
 void ParticleFilter::create_distributions(float deltaOdomVertical, float deltaOdomHorizontal, float currentTheta) {
-    // 1. Define a minimum baseline noise so the filter always has some uncertainty.
-    // (Recommendation: Move these into ParticleFilterSettings in particlefilter.hpp for easier tuning later)
     const float BASE_VERTICAL_NOISE = 0.5f; 
     const float BASE_HORIZONTAL_NOISE = 0.5f;
 
-    // 2. Calculate total spread: Base Noise + (Proportional Multiplier * Absolute Movement)
-    // Note: settings.verticalNoise and horizontalNoise now act as proportional multipliers.
     float vNoiseSpread = BASE_VERTICAL_NOISE + (settings.verticalNoise * std::abs(deltaOdomVertical));
     verticalDistribution = std::uniform_real_distribution<>(deltaOdomVertical - vNoiseSpread, 
                                                             deltaOdomVertical + vNoiseSpread);
@@ -219,7 +194,6 @@ void ParticleFilter::create_distributions(float deltaOdomVertical, float deltaOd
     horizontalDistribution = std::uniform_real_distribution<>(deltaOdomHorizontal - hNoiseSpread, 
                                                               deltaOdomHorizontal + hNoiseSpread);
 
-    // 3. Angular noise remains centered around the current orientation
     angularDistribution = std::uniform_real_distribution<>(currentTheta - settings.angularNoise, 
                                                            currentTheta + settings.angularNoise);
 }
@@ -231,6 +205,39 @@ void ParticleFilter::update_sensors() {
 }
 
 float ParticleFilter::weight_particles(float currentTheta) {
+    // --- 1. PROBABILISTIC ODOMETRY GATING ---
+    
+    // First, find our "Deterministic Belief" by averaging the particles 
+    // after they were shifted by the tracking wheels.
+    float sumX = 0.0f, sumY = 0.0f;
+    for (const auto& p : particles) {
+        sumX += p.first;
+        sumY += p.second;
+    }
+    lemlib::Pose expectedPose(sumX / NUM_PARTICLES, sumY / NUM_PARTICLES, currentTheta);
+
+    std::vector<DistanceSensor*> original_sensors = sensors;
+    std::vector<DistanceSensor*> valid_sensors;
+
+    for (auto sensor : sensors) {
+        if (sensor->is_disabled()) continue;
+        
+        // Evaluate the probability of the physical sensor reading IF the robot 
+        // was sitting exactly at the expected Odometry pose.
+        auto expected_prob = sensor->p(expectedPose, circles, polygons);
+        
+        // If the probability is greater than a microscopic amount, the reading is 
+        // believable. If it's near zero, it hit a robot/gamepiece and we reject it!
+        if (expected_prob.has_value() && expected_prob.value() > 0.00001f) {
+            valid_sensors.push_back(sensor);
+        }
+    }
+
+    // Temporarily swap to only use the unblocked sensors for the particle evaluation
+    sensors = valid_sensors;
+
+    // --- 2. PARTICLE WEIGHTING ---
+
     float weightSum = 0.0f;
     for (size_t i = 0; i < NUM_PARTICLES; ++i) {
         if (out_of_field(particles[i])) {
@@ -243,50 +250,18 @@ float ParticleFilter::weight_particles(float currentTheta) {
         weightSum += weights[i];
     }
 
+    // Restore the original sensor list for the next loop
+    sensors = original_sensors;
+
     return weightSum;
 }
-
-// std::pair<double, double> ParticleFilter::resample_particles(float weightSum) {
-//     const double avgWeight = weightSum / static_cast<double>(NUM_PARTICLES);
-//     std::uniform_real_distribution<float> distribution(0.0f, avgWeight);
-//     const float randWeight = distribution(randomGenerator);
-
-//     for (size_t i = 0; i < NUM_PARTICLES; i++) {
-//         oldParticles[i] = particles[i];
-//     }
-
-//     size_t j = 0;
-
-//     float cumulativeWeight = 0.0f;
-//     float xSum = 0.0f, ySum = 0.0f;
-
-//     for (size_t i = 0; i < NUM_PARTICLES; i++) {
-//         const double weight = static_cast<double>(i) * avgWeight + randWeight;
-
-//         while (cumulativeWeight < weight) {
-//             if (j >= weights.size()) {
-//                 break;
-//             }
-//             cumulativeWeight += weights[j];
-//             j++;
-//         }
-
-//         particles[i].first = oldParticles[j-1].first;
-//         particles[i].second = oldParticles[j-1].second;
-
-//         xSum += particles[i].first;
-//         ySum += particles[i].second;
-//     }
-
-//     return {xSum / static_cast<double>(NUM_PARTICLES), ySum / static_cast<double>(NUM_PARTICLES)};
-// }
 
 std::pair<double, double> ParticleFilter::resample_particles(float weightSum) {
     const double avgWeight = weightSum / static_cast<double>(NUM_PARTICLES);
     std::uniform_real_distribution<float> distribution(0.0f, avgWeight);
     const float randWeight = distribution(randomGenerator);
 
-    oldParticles = particles; // Vector copy assignment is safe
+    oldParticles = particles; // Safe vector copy assignment
 
     size_t j = 0;
     float cumulativeWeight = weights[0]; // Initialize with first weight
@@ -309,7 +284,6 @@ std::pair<double, double> ParticleFilter::resample_particles(float weightSum) {
     return {xSum / NUM_PARTICLES, ySum / NUM_PARTICLES};
 }
 
-
 float ParticleFilter::weight_particle(const lemlib::Pose& particle) {
     float totalWeight = 1.0;
 
@@ -324,7 +298,8 @@ float ParticleFilter::weight_particle(const lemlib::Pose& particle) {
         }
     }
 
-    return totalWeight;
+    // Safety clamp: guarantees weight is never exactly 0.0
+    return std::max(totalWeight, 0.0000001f);
 }
 
 lemlib::Pose ParticleFilter::get_noisy_motion() {
