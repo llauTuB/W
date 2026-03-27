@@ -3,7 +3,6 @@
 #include "config/robot_config.hpp"
 #include "config/lemlib_config.hpp"
 
-// MCL definitions (declared in globals.hpp)
 lemlib::Pose distanceRightOffset(DISTANCE_RIGHT_OFFSET_X, DISTANCE_RIGHT_OFFSET_Y, DISTANCE_RIGHT_OFFSET_T);
 lemlib::Pose distanceLeftOffset(DISTANCE_LEFT_OFFSET_X, DISTANCE_LEFT_OFFSET_Y, DISTANCE_LEFT_OFFSET_T);
 lemlib::Pose distanceFrontOffset(DISTANCE_FRONT_OFFSET_X, DISTANCE_FRONT_OFFSET_Y, DISTANCE_FRONT_OFFSET_T);

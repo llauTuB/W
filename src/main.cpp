@@ -1,10 +1,9 @@
 #include "main.h"
-#include "lemlib/api.hpp"
+#include "lemlib/api.hpp" // IWYU pragma: keep
 #include "config/robot_config.hpp"
 #include "config/mcl_config.hpp"
 #include "config/lemlib_config.hpp"
-#include "globals/all_const.hpp"
-#include "utils/pneumatics.hpp"
+#include "globals/all_const.hpp" // IWYU pragma: keep
 
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
@@ -52,9 +51,8 @@ void initialize() {
 
     pros::lcd::initialize(); // initialize brain screen
     robot.calibrate(); // calibrate sensors
-    filter.set_enabled(true);
-    filter.set_starting_pose(lemlib::Pose(48, 8, 0), false);
-master = pros::Controller(pros::E_CONTROLLER_MASTER);
+
+    master = pros::Controller(pros::E_CONTROLLER_MASTER);
     // the default rate is 50. however, if you need to change the rate, you
     // can do the following.
     // lemlib::bufferedStdout().setRate(...);
@@ -97,26 +95,23 @@ void competition_initialize() {}
 
 
 void autonomous() {
-   
- 
+   filter.set_enabled(true);
+   filter.set_starting_pose(lemlib::Pose(48, 8, 0), true);
    robot.moveToPoint(48, 46, 2000, {true, 100, 10, 1});
    robot.turnToHeading(90, 700, {lemlib::AngularDirection::AUTO, 127, 10, 1});
    loader.set_value(127);
    robot.moveToPoint(55, 48, 10000, {true, 70, 10, 1});
-            intakeLow.move_voltage(12000);
-            intakeHigh1.move_voltage(12000);
-            intakeHigh2.move_voltage(12000);
-
 }
 
 
 void opcontrol() {
-        master = pros::Controller(pros::E_CONTROLLER_MASTER);
-        bool descoreState = false;
-        bool loaderState = false;
-        bool doubleParkState = false;
-        bool upScoreState = false;
-        bool upIntakeState = false;
+    master = pros::Controller(pros::E_CONTROLLER_MASTER);
+    bool upEncoderState = false;
+    bool loaderState = false;
+    bool middleDescoreState = false;
+    bool upScoreDescoreState = false;
+    bool upIntakeState = false;
+
     while (true) {
         int leftY = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
         int rightX = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
@@ -129,49 +124,53 @@ void opcontrol() {
         }
 
 
-        if(master.get_digital(INTAKE_STATE_LOAD)) {
-        intakeLow.move_voltage(12000);
-        intakeHigh1.move_voltage(12000);
-        intakeHigh2.move_voltage(12000);
-
-    } 
-    else if(master.get_digital(INTAKE_STATE_LOWSCORE)) {
-        intakeLow.move_voltage(-12000);
-        intakeHigh1.move_voltage(-12000);
-        intakeHigh2.move_voltage(-8000);
-
-    } 
-    else if(master.get_digital(INTAKE_STATE_MIDDLESCORE)) {
-        intakeLow.move_voltage(12000);
-        intakeHigh1.move_voltage(8000);
-        intakeHigh2.move_voltage(-7000);
-    } 
-    else {
-        intakeLow.move_voltage(0);
-        intakeHigh1.move_voltage(0);
-        intakeHigh2.move_voltage(0);
-    }
+        if (master.get_digital(INTAKE_STATE_LOAD)) {
+            intakeStage1.move_voltage(12000);
+            intakeStage2.move_voltage(12000);
+            intakeStage3.move_voltage(12000);
+        } 
+        else if (master.get_digital(INTAKE_STATE_LOWSCORE)) {
+            intakeStage1.move_voltage(-12000);
+            intakeStage2.move_voltage(-12000);
+            intakeStage3.move_voltage(-8000);
+        } 
+        else if (master.get_digital(INTAKE_STATE_MIDDLESCORE)) {
+            intakeStage1.move_voltage(12000);
+            intakeStage2.move_voltage(8000);
+            intakeStage3.move_voltage(-7000);
+        } 
+        else {
+            intakeStage1.move_voltage(0);
+            intakeStage2.move_voltage(0);
+            intakeStage3.move_voltage(0);
+        }
      
 
-    if(master.get_digital_new_press(LOADER_TOGGLE)) {
-        loaderState = !loaderState;
-        loader.set_value(loaderState);
-    } 
+        if (master.get_digital_new_press(LOADER_TOGGLE)) {
+            loaderState = !loaderState;
+            loader.set_value(loaderState);
+        } 
 
+        if (master.get_digital_new_press(MIDDLE_DESCORE_TOGGLE)) {
+            middleDescoreState = !middleDescoreState;
+            middle_descore.set_value(middleDescoreState);
+        } 
 
-    if(master.get_digital_new_press(DESCORE_TOGGLE)) {
-        descoreState = !descoreState;
-        descore.set_value(descoreState);
-    } 
+        if (master.get_digital_new_press(UPSCORE_DESCORE_TOGGLE)) {
+            upScoreDescoreState = !upScoreDescoreState;                 
+            upScore.set_value(upScoreDescoreState);    
+            descore.set_value(upScoreDescoreState);
+        }
 
-  if (master.get_digital_new_press(INTAKE_UPSCORE_TOGGLE)) {
-    upScoreState = !upScoreState;                 // toggle true/false
-    upScore.set_value(upScoreState ? 127 : 0);    // if true -> 127, else -> 0
-  }
-    if(master.get_digital_new_press(DOUBLE_PARK_TOGGLE)) {
-        doubleParkState = !doubleParkState;
-        doublePark.set_value(doubleParkState); 
-    } 
+        if (master.get_digital_new_press(INTAKE_UPPER_TOGGLE)) {
+            upIntakeState = !upIntakeState;
+            intake_upper.set_value(upIntakeState); 
+        }
+
+        if (master.get_digital_new_press(ENCODER_UPPER_TOGGLE)) {
+            upEncoderState = !upEncoderState;
+            encoder_upper.set_value(upEncoderState); 
+        }  
 
 
         pros::delay(10);

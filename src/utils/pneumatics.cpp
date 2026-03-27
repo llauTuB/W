@@ -15,28 +15,9 @@ void loader_toggle() {
     } 
 }
 
-void descore_toggle() {
-    if(master.get_digital_new_press(DESCORE_TOGGLE)) {
-        descoreState = !descoreState;
-        descore.set_value(descoreState);
-    } 
-}
-
-
-
 void upScore_toggle() {
-  if (master.get_digital_new_press(INTAKE_UPSCORE_TOGGLE)) {
+  if (master.get_digital_new_press(UPSCORE_DESCORE_TOGGLE)) {
     upScoreState = !upScoreState;                 // toggle true/false
     upScore.set_value(upScoreState ? 127 : 0);    // if true -> 127, else -> 0
   }
-}
-
-
-
-void doublePark_toggle() {
-    if(master.get_digital_new_press(DOUBLE_PARK_TOGGLE)) {
-        doubleParkState = !doubleParkState;
-        doublePark.set_value(doubleParkState); 
-       
-    } 
 }
