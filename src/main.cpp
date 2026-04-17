@@ -156,7 +156,7 @@ void opcontrol() {
     bool upScoreDescoreState = false;
     bool upIntakeState = false;
     autoIntakeActive = false;
-    // encoder_upper.set_value(127);
+    encoder_upper.set_value(127);
     //    robot.setPose(-48, 10, 0);
 
 

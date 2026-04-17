@@ -100,8 +100,8 @@ void autoIntakeTaskFn() {
  void scoreMiddle() {
    autoIntakeActive = false;
    intakeStage1.move_voltage(12000);
-   intakeStage2.move_voltage(8000);
-   intakeStage3.move_voltage(-8000);
+   intakeStage2.move_voltage(7000);
+   intakeStage3.move_voltage(-7000);
  }
 
 
@@ -755,141 +755,155 @@ void awp_2long_1middle()
 //    scoreMiddleDown(); }
 
 void skills() {
-   // robot.setPose(47, -8, 270);
-   // park_opt.set_led_pwm(60);
-   // optical.set_led_pwm(100);
-   // optical.set_integration_time(5.0);
+   robot.setPose(47, -8, 270);
+   park_opt.set_led_pwm(60);
+   optical.set_led_pwm(100);
+   optical.set_integration_time(5.0);
 
-   // //score middle 2 blocks
-   // loadBasket();
-   // middle_descore.set_value(1);
-   // robot.moveToPoint(24, -23, 1500, {true, 115, 5, 1});
-   // pros::delay(650);
-   // robot.turnToHeading(135, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
-   // intakeStage3.move(-4000);
-   // intakeStage2.move(-4000);
-   // pros::delay(300);
-   // intakeStage3.move(0);
-   // intakeStage2.move(0);
+   //score middle 2 blocks
+   loadBasket();
+   middle_descore.set_value(1);
+   robot.moveToPoint(24, -25, 1500, {true, 115, 5, 1});
+   pros::delay(560);
+   loader.set_value(1);
+
+   robot.turnToHeading(135, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+   intakeStage3.move(-4000);
+   intakeStage2.move(-4000);
+   pros::delay(300);
+   intakeStage3.move(0);
+   intakeStage2.move(0);
 
 
-   // robot.moveToPoint(11, -11, 1000, {false, 115, 10, 1});
-   // robot.waitUntilDone();
-   // loader.set_value(0);
-   // upScore.set_value(1);
-   // scoreMiddle();
-   // pros::delay(1300);
-   // stopIntake();
+   robot.moveToPoint(11, -11, 1000, {false, 115, 10, 1});
+   robot.waitUntilDone();
+   loader.set_value(0);
+   upScore.set_value(1);
+   scoreMiddle_slower();
+   pros::delay(2200);
+   stopIntake();
 
-   // //1st loader
-   // robot.moveToPoint(44, -45, 1200, {true, 110, 10, 1});
-   // robot.waitUntil(8);
-   // upScore.set_value(0);
-   // middle_descore.set_value(0);
-   // robot.turnToHeading(90, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
-   // robot.waitUntilDone();
-   // loader.set_value(1);
-   // loadBasket();
-   // robot.moveToPoint(67, -47, 1300, {true, 55, 0, 1});
-   // robot.waitUntilDone();
-   // // robot.tank(70, 70);
-   // // pros::delay(400);
-   // robot.tank(-70, -70);
-   // pros::delay(200);
+   //1st loader
+   robot.moveToPoint(44, -45, 1200, {true, 110, 10, 1});
+   robot.waitUntil(8);
+   upScore.set_value(0);
+   middle_descore.set_value(0);
+   robot.turnToHeading(90, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+   robot.waitUntilDone();
+   loader.set_value(1);
+   loadBasket();
+   robot.moveToPoint(67, -47, 1300, {true, 55, 0, 1});
+   robot.waitUntilDone();
    // robot.tank(70, 70);
-   // pros::delay(1700);
-   // robot.tank(0, 0);
-   // // intakeStage1.move(2000);
-   // // stopIntake();
-   // keep_intake_alive();
-   // distance_reset();
+   // pros::delay(400);
+   robot.tank(-70, -70);
+   pros::delay(200);
+   robot.tank(70, 70);
+   pros::delay(1700);
+   robot.tank(0, 0);
+   // intakeStage1.move(2000);
+   // stopIntake();
+   keep_intake_alive();
+   distance_reset();
 
-   // //1st long goal
-   // robot.moveToPoint(31, -60, 1000, {false, 110, 10, 1});
-   // robot.waitUntilDone();
-   // // stopIntake();
-   // // loader.set_value(0);
-   // distance_reset();
-   // robot.turnToHeading(90, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
-   // robot.moveToPoint(-22, -60, 1200, {false, 110, 10, 1});
-   // robot.waitUntilDone();
+   //1st long goal
+   robot.moveToPoint(31, -60, 1000, {false, 110, 10, 1});
+   robot.waitUntilDone();
+   // stopIntake();
    // loader.set_value(0);
-   // distance_reset();
-   // robot.moveToPoint(-38, -50, 1200, {false, 110, 10, 1});
+   distance_reset();
+   robot.turnToHeading(90, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+   robot.moveToPoint(-22, -60, 1200, {false, 110, 10, 1});
+   robot.waitUntilDone();
+   loader.set_value(0);
+   distance_reset();
+   robot.moveToPoint(-38, -50, 1200, {false, 110, 10, 1});
 
-   // robot.turnToHeading(270, 450, {lemlib::AngularDirection::AUTO, 127, 10, 0});
-   // robot.waitUntilDone();
-   // upScore.set_value(1);
-   // robot.moveToPoint(-20, -50, 900, {false, 100, 10, 1});
-   // robot.waitUntilDone();
-   // robot.waitUntilDone();
-   // robot.tank(-100, -100);
-   // scoreUp();
-   // pros::delay(1800);
-   // robot.tank(-0, -0);
-   // loader.set_value(1);
+   robot.turnToHeading(270, 450, {lemlib::AngularDirection::AUTO, 127, 10, 0});
+   robot.waitUntilDone();
+   upScore.set_value(1);
+   robot.moveToPoint(-20, -50, 900, {false, 100, 10, 1});
+   robot.waitUntilDone();
+   robot.waitUntilDone();
+   robot.tank(-100, -100);
+   scoreUp();
+   pros::delay(1800);
+   robot.tank(-0, -0);
+   loader.set_value(1);
 
-   // //2nd loader
-   // robot.moveToPoint(-68, -49, 1400, {true, 60, 0, 1});
-   // robot.waitUntil(5);
-   // loadBasket();
-   // upScore.set_value(0);
-   // robot.waitUntilDone();
-   // // robot.tank(60, 60);
-   // // pros::delay(400);
-   // robot.tank(-70, -70);
-   // pros::delay(200);
+   //2nd loader
+   robot.moveToPoint(-68, -49, 1400, {true, 60, 0, 1});
+   robot.waitUntil(5);
+   loadBasket();
+   upScore.set_value(0);
+   robot.waitUntilDone();
    // robot.tank(60, 60);
-   // pros::delay(1700);
-   // robot.tank(0, 0);
+   // pros::delay(400);
+   robot.tank(-70, -70);
+   pros::delay(200);
+   robot.tank(60, 60);
+   pros::delay(1700);
+   robot.tank(0, 0);
 
-   // keep_intake_alive();
-   // distance_reset();
-
-
-   // //2nd long goal
-   // robot.moveToPoint(-26, -48, 900, {false, 110, 10, 1});
-   // robot.waitUntilDone();
-   // scoreUp_slower();
-   // pros::delay(2000);
-   // loader.set_value(0);
-   // distance_reset();
+   keep_intake_alive();
+   distance_reset();
 
 
-   // //park clearing
+   //2nd long goal
+   robot.moveToPoint(-26, -48, 900, {false, 110, 10, 1});
+   robot.waitUntilDone();
+   scoreUp_slower();
+   pros::delay(2000);
+   loader.set_value(0);
+   distance_reset();
+
+
+   // // //park clearing
    // robot.moveToPoint(-64, -26, 900, {true, 100, 10, 1});
    // robot.turnToHeading(340, 400, {lemlib::AngularDirection::AUTO, 90, 0, 0});
 
-   robot.setPose(61.66, -27.42, 337);
-//    robot.waitUntilDone();
-//    upScore.set_value(0);
+   // robot.waitUntilDone();
+   // upScore.set_value(0);
 
-   loadBasket();
-   encoder_upper.set_value(127);
-
-   robot.tank(120,120);
-   pros::delay(250);
-   loader.set_value(1);
-   pros::delay(250);
-   loader.set_value(0);
-   robot.tank(100,100);
-   pros::delay(2100);
-   robot.tank(0,0);
-   pros::delay(100);
-   // stopIntake();
-   // distance_reset();
-
-
-
-
-   robot.tank(-80,-100);
-   encoder_upper.set_value(0);
-   pros::delay(100);
-   robot.tank(0,0);
-   pros::delay(100);
+//    robot.setPose(-61.67, -27, 337),
    
-   distance_reset_for_skills_beginning();
-   pros::delay(600);
+//    loadBasket();
+//    encoder_upper.set_value(127);
+
+//    robot.tank(127,127);
+//    pros::delay(100);
+//    loader.set_value(1);
+//    pros::delay(300);
+//    loader.set_value(0);
+//    robot.tank(100,100);
+//    pros::delay(300);
+//       robot.tank(120,120);
+//    pros::delay(400);
+//       loader.set_value(1);
+//    pros::delay(300);
+
+//    robot.tank(0,0);
+//    pros::delay(500);
+//    loader.set_value(0);
+
+//    // stopIntake();
+//    // distance_reset();
+
+
+
+
+//    robot.tank(-80,-95);
+//    encoder_upper.set_value(0);
+//    pros::delay(1300);
+//    robot.tank(0,0);
+//    pros::delay(900);
+
+
+//    robot.turnToHeading(90, 1000, {lemlib::AngularDirection::AUTO, 100, 10, 1});
+//    pros::delay(300);
+
+// distance_reset_for_skills_beginning();
+//    pros::delay(1000);
 
 
 //    //scoring middle goal
@@ -898,45 +912,33 @@ void skills() {
 //    // robot.waitUntilDone();
 //    stopIntake();
 // //comment ends
-
-
-
-//    robot.turnToHeading(80, 600, {lemlib::AngularDirection::AUTO, 127, 10, 1});
-//    // robot.swingToHeading(80, lemlib::DriveSide::RIGHT, 1200, {lemlib::AngularDirection::AUTO, 127, 10, 1});
-
 //    robot.waitUntilDone();
-
 //    intakeStage1.move(10000);
-//    robot.moveToPoint(-29, 17, 1100, {true, 115, 0, 1});
+//    robot.moveToPoint(-27, 22, 900, {true, 115, 0, 1});
 //    robot.waitUntilDone();
+//    middle_descore.set_value(1);
 //    intakeStage1.move(0);
 
-//    robot.turnToHeading(314, 500, {lemlib::AngularDirection::AUTO, 127, 10, 1}, false);
-//    robot.moveToPoint(-11, 6, 1100, {false, 70, 10, 1});
+   // robot.turnToHeading(314, 500, {lemlib::AngularDirection::AUTO, 127, 10, 1}, false);
+   // robot.moveToPose(-9, 9, 314, 1100, {false, 2, 0.1, 120, 20, 0});
 
-//    robot.waitUntilDone();
-//    // intakeStage3.move_voltage(-12000);
-//    intakeStage2.move_voltage(-12000);
-//    // intakeStage1.move_voltage(-1000);
-
-//    pros::delay(300);
-//    intakeStage3.move_voltage(0);
-//    intakeStage2.move_voltage(0);
-//    // intakeStage1.move_voltage(0);
-//    upScore.set_value(127);
-//    intakeStage3.move_voltage(-10000);
-//    pros::delay(400);
-
-
-
+   // robot.waitUntilDone();
+   // robot.tank(-70, -70);
+   // upScore.set_value(1);
    // intakeStage3.move_voltage(-12000);
    // intakeStage2.move_voltage(-12000);
-   // // intakeStage1.move_voltage(-1000);
+   // intakeStage1.move_voltage(-1000);
+   // loader.set_value(1);
 
-   // pros::delay(600);
+   // pros::delay(300);
    // intakeStage3.move_voltage(0);
    // intakeStage2.move_voltage(0);
    // intakeStage1.move_voltage(0);
+   // pros::delay(200);
+
+
+
+
 
 
 
@@ -946,123 +948,191 @@ void skills() {
 
    // scoreMiddle_slower();
    // pros::delay(2800);
+   // robot.tank(0, 0);
    // stopIntake();
 
-   // 
+    
+   // // // wait_blue();
 
-   //    intakeStage2.move_voltage(6000);
-   //    intakeStage3.move_voltage(-6000);
-   //    pros::delay(1000);
-   //    //    intakeStage1.move_voltage(12000);
-
-   //    //    intakeStage2.move_voltage(4000);
-   //    //   intakeStage3.move_voltage(-3000);
-   //    //         
-   // // wait_blue();
-   // // scoreMiddle_slower();
-   // // pros::delay(3000);
-   // pros::delay(200);
 
 
 
    // //3rd loader
 
 
-   // robot.moveToPoint(-44, 49, 1200, {true, 110, 10, 1});
+
+   loadBasket();
+   robot.turnToHeading(350, 600, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+   robot.waitUntilDone();
+   upScore.set_value(0);
+   robot.moveToPoint(-24, -27, 1500, {true, 80, 10, 1});
+   // robot.moveToPose(-23, -27, 0, 1100, {true, 2, 0.2, 110, 10, 0});
+
+   pros::delay(400);
+   loader.set_value(1);
+   pros::delay(400);
+   loader.set_value(0);
+   robot.turnToHeading(45, 600, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+
+   robot.moveToPose(-12, -11, 45, 800, {true, 2, 0.2, 127, 20, 1});
+   robot.waitUntilDone();
+   loader.set_value(1);
+   pros::delay(100);
+
+   intake_upper.set_value(1);
+   scoreMiddleDown();
+   pros::delay(1500);
+   stopIntake();
+   // intake_upper.set_value(0);
+   pros::delay(50);
+   loader.set_value(0);
+   // robot.turnToHeading(0, 600, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+
+   robot.moveToPoint(-27, -26, 900, {false, 115, 10, 1});
+   robot.waitUntilDone();
+   intake_upper.set_value(0);
+
+   robot.moveToPoint(-28, 19,1500, {true, 110, 10, 1});
+   loadBasket();
+   pros::delay(1000);
+   loader.set_value(1);
+   pros::delay(500);
+   // loader.set_value(0);
+
+
+   // robot.moveToPose(-15, 9, 318, 2000, {false, 2, 0.25, 127, 10, 1});
+   // robot.waitUntil(10);
+   // intakeStage3.move_voltage(-3000);
+   // intakeStage2.move_voltage(-3000);
+   // // intakeStage1.move_voltage(-2000);
+   // robot.waitUntilDone();
+
+   // // middle_descore.set_value(1);
+   // upScore.set_value(1);
+
+
+   // pros::delay(100);
+   // scoreMiddle_slower();
+
+
+
+
+
+
+
+
+
+   robot.turnToHeading(330, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+   robot.moveToPoint(-48, 45, 1300, {true, 110, 10, 1});
+   robot.turnToHeading(270, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
+
+   robot.moveToPoint(-26, 45, 1200, {false, 100, 10, 1});
+   robot.waitUntilDone();
+   scoreUp_slower();
+   pros::delay(1400);
+   // loader.set_value(1);
+   distance_reset();
+
+
+
+
+
+   // robot.moveToPoint(-42, 48, 2500, {true, 110, 10, 1});
    // robot.waitUntil(8);
+   // middle_descore.set_value(0);
    // upScore.set_value(0);
    // robot.turnToHeading(270, 450, {lemlib::AngularDirection::AUTO, 127, 10, 1});
    // robot.waitUntilDone();
    // loader.set_value(1);
-   // loadBasket();
 
-   // robot.moveToPoint(-67, 47, 1300, {true, 55, 0, 1});
-   // robot.waitUntilDone();
-   // // robot.tank(70, 70);
-   // // pros::delay(200);
-   // robot.tank(-70, -70);
-   // pros::delay(200);
-   // robot.tank(90, 90);
-   // pros::delay(2000);
-   // robot.tank(0, 0);
+   loadBasket();
 
-   // // stopIntake();
-   // keep_intake_alive();
-   // distance_reset();
+   robot.moveToPoint(-67, 47, 1300, {true, 55, 0, 1});
+   robot.waitUntil(8);
+   middle_descore.set_value(0);
+   upScore.set_value(0);
+   robot.waitUntilDone();
 
-
-   // //3nd long goal
-   // robot.moveToPoint(-31, 60, 1000, {false, 100, 10, 1});
-   // robot.waitUntilDone();
-   // distance_reset();
-   // robot.turnToHeading(270, 450, {lemlib::AngularDirection::AUTO, 127, 10, 0});
-   // robot.moveToPoint(22, 58.5, 1300, {false, 110, 10, 1});
-   // robot.waitUntilDone();
-   // loader.set_value(0);
-   // distance_reset();
-   // robot.moveToPoint(42, 44, 900, {false, 110, 10, 1});
-
-   // robot.turnToHeading(90, 450, {lemlib::AngularDirection::AUTO, 127, 10, 0});
-   // robot.waitUntilDone();
-   // upScore.set_value(1);
-   // robot.moveToPoint(22, 45, 950, {false, 100, 10, 1});
-   // robot.waitUntilDone();
-   // scoreUp();
-   // pros::delay(2200);
-   // stopIntake();
-   // loader.set_value(1);
+   robot.tank(-70, -70);
+   pros::delay(200);
+   robot.tank(90, 90);
+   pros::delay(2000);
+   robot.tank(0, 0);
+   keep_intake_alive();
+   distance_reset();
 
 
+   //3nd long goal
+   robot.moveToPoint(-31, 62, 1000, {false, 100, 10, 1});
+   robot.waitUntilDone();
+   distance_reset();
+   robot.turnToHeading(270, 450, {lemlib::AngularDirection::AUTO, 127, 10, 0});
+   robot.moveToPoint(22, 63, 1300, {false, 110, 10, 1});
+   robot.waitUntilDone();
+   loader.set_value(0);
+   distance_reset();
+   robot.moveToPoint(42, 48, 900, {false, 110, 10, 1});
 
-   // //4th loader
-   // robot.moveToPoint(67, 46, 2000, {true, 50, 0, 1});
-   // robot.waitUntil(5);
-   // loadBasket();
-   // upScore.set_value(0);
-   // robot.waitUntilDone();
-   // robot.tank(70, 70);
-   // pros::delay(200);
-   // robot.tank(-70, -70);
-   // pros::delay(200);
-   // robot.tank(90, 90);
-   // pros::delay(1800);
-   // robot.tank(0, 0);
-
-   // stopIntake();
-   // distance_reset();
-
-
-   // //4th long goal
-   // robot.moveToPoint(26, 49.5, 900, {false, 100, 10, 1});
-   // robot.waitUntilDone();
-   // scoreUp_slower();
-   // pros::delay(2000);
-   // loader.set_value(0);
-   // distance_reset();
+   robot.turnToHeading(90, 450, {lemlib::AngularDirection::AUTO, 127, 10, 0});
+   robot.waitUntilDone();
+   upScore.set_value(1);
+   robot.moveToPoint(22, 49, 950, {false, 100, 10, 1});
+   robot.waitUntilDone();
+   scoreUp();
+   pros::delay(2200);
+   stopIntake();
+   loader.set_value(1);
 
 
-   // //park clearing
-   // // robot.moveToPose(63, 24, 180, 4000, {true, 8, 0.4, 100, 10, 1});
 
-   // robot.moveToPoint(63, 26, 900, {true, 120, 50, 1});
-   // // robot.swingToHeading(150, lemlib::DriveSide::RIGHT, 500, {lemlib::AngularDirection::AUTO, 127, 10, 0});
-   // robot.turnToHeading(165, 400, {lemlib::AngularDirection::AUTO, 127, 127, 1});
+   //4th loader
+   robot.moveToPoint(67, 49, 2000, {true, 50, 0, 1});
+   robot.waitUntil(5);
+   loadBasket();
+   upScore.set_value(0);
+   robot.waitUntilDone();
+   robot.tank(70, 70);
+   pros::delay(200);
+   robot.tank(-70, -70);
+   pros::delay(200);
+   robot.tank(90, 90);
+   pros::delay(1800);
+   robot.tank(0, 0);
 
-   // robot.waitUntilDone();
-   // upScore.set_value(0);
+   stopIntake();
+   distance_reset();
+
+
+   //4th long goal
+   robot.moveToPoint(26, 49.5, 900, {false, 100, 10, 1});
+   robot.waitUntilDone();
+   scoreUp_slower();
+   pros::delay(2000);
+   loader.set_value(0);
+   distance_reset();
+
+
+   //park clearing
+
+   robot.moveToPoint(63, 26, 900, {true, 120, 50, 1});
+   robot.turnToHeading(165, 400, {lemlib::AngularDirection::AUTO, 127, 127, 1});
+
+   robot.waitUntilDone();
+   upScore.set_value(0);
 
    // // robot.setPose(-60, -28, 353);
-   // intakeStage1.move_voltage(-12000);
-   // intakeStage2.move_voltage(-12000);
-   // intakeStage3.move_voltage(-12000);   
-   // loader.set_value(1);
-   // encoder_upper.set_value(127);
+   intakeStage1.move_voltage(-12000);
+   intakeStage2.move_voltage(-12000);
+   intakeStage3.move_voltage(-12000);   
+   loader.set_value(1);
+   encoder_upper.set_value(127);
 
-   // // robot.moveToPoint(68, 4, 5000, {true, 127, 127});
+   robot.moveToPoint(68, 4, 5000, {true, 127, 127});
+   robot.waitUntilDone();
    // // park_red();
-   // loader.set_value(0);
+   loader.set_value(0);
 
-   // stopIntake();
+   stopIntake();
 }
 
 void awp() {

@@ -191,22 +191,26 @@ void distance_reset_BL() {
     double newX = p.x;
     double newY = p.y;
 
-    if (facing == 0) {
-        if (p.x < 0 && dL < MAX_RESET_DIST) newX = -FIELD_HALF_WIDTH + (dL * correction) + OFF_LEFT;
-        if (p.y < 0 && dB < MAX_RESET_DIST) newY = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
-    }
-    else if (facing == 1) {
-        if (p.x < 0 && dB < MAX_RESET_DIST) newX = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
-        if (p.y > 0 && dL < MAX_RESET_DIST) newY = FIELD_HALF_WIDTH - (dL * correction) - OFF_LEFT;
-    }
-    else if (facing == 2) {
-        if (p.x > 0 && dL < MAX_RESET_DIST) newX = FIELD_HALF_WIDTH - (dL * correction) - OFF_LEFT;
-        if (p.y > 0 && dB < MAX_RESET_DIST) newY = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
-    }
-    else if (facing == 3) {
-        if (p.x > 0 && dB < MAX_RESET_DIST) newX = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
-        if (p.y < 0 && dL < MAX_RESET_DIST) newY = -FIELD_HALF_WIDTH + (dL * correction) + OFF_LEFT;
-    }
+    // if (facing == 0) {
+    //     if (p.x < 0 && dL < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = -FIELD_HALF_WIDTH + (dL * correction) + OFF_LEFT;
+    //     if (p.y < 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
+    // }
+    // else if (facing == 1) {
+    //     if (p.x < 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
+    //     if (p.y > 0 && dL < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = FIELD_HALF_WIDTH - (dL * correction) - OFF_LEFT;
+    // }
+    // else if (facing == 2) {
+    //     if (p.x > 0 && dL < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = FIELD_HALF_WIDTH - (dL * correction) - OFF_LEFT;
+    //     if (p.y > 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
+    // }
+    // else if (facing == 3) {
+    //     if (p.x > 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
+    //     if (p.y < 0 && dL < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = -FIELD_HALF_WIDTH + (dL * correction) + OFF_LEFT;
+    // }
+
+
+    newX = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
+    newY = FIELD_HALF_WIDTH - (dL * correction) - OFF_LEFT;
 
     robot.setPose(newX, newY, p.theta);
 }
@@ -234,20 +238,20 @@ void distance_reset_BR() {
     double newY = p.y;
 
     if (facing == 0) {
-        if (p.x > 0 && dR < MAX_RESET_DIST) newX = FIELD_HALF_WIDTH - (dR * correction) - OFF_RIGHT;
-        if (p.y < 0 && dB < MAX_RESET_DIST) newY = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
+        if (p.x > 0 && dR < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = FIELD_HALF_WIDTH - (dR * correction) - OFF_RIGHT;
+        if (p.y < 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
     }
     else if (facing == 1) {
-        if (p.x < 0 && dB < MAX_RESET_DIST) newX = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
-        if (p.y < 0 && dR < MAX_RESET_DIST) newY = -FIELD_HALF_WIDTH + (dR * correction) + OFF_RIGHT;
+        if (p.x < 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = -FIELD_HALF_WIDTH + (dB * correction) + OFF_BACK;
+        if (p.y < 0 && dR < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = -FIELD_HALF_WIDTH + (dR * correction) + OFF_RIGHT;
     }
     else if (facing == 2) {
-        if (p.x < 0 && dR < MAX_RESET_DIST) newX = -FIELD_HALF_WIDTH + (dR * correction) + OFF_RIGHT;
-        if (p.y > 0 && dB < MAX_RESET_DIST) newY = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
+        if (p.x < 0 && dR < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = -FIELD_HALF_WIDTH + (dR * correction) + OFF_RIGHT;
+        if (p.y > 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
     }
     else if (facing == 3) {
-        if (p.x > 0 && dB < MAX_RESET_DIST) newX = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
-        if (p.y > 0 && dR < MAX_RESET_DIST) newY = FIELD_HALF_WIDTH - (dR * correction) - OFF_RIGHT;
+        if (p.x > 0 && dB < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newX = FIELD_HALF_WIDTH - (dB * correction) - OFF_BACK;
+        if (p.y > 0 && dR < MAX_RESET_DIST_FOR_SKILLS_BEGINNING) newY = FIELD_HALF_WIDTH - (dR * correction) - OFF_RIGHT;
     }
 
     robot.setPose(newX, newY, p.theta);
