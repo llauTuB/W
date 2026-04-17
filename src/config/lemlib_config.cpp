@@ -5,10 +5,10 @@
 
 // LemLib definitions
 
-lemlib::TrackingWheel verticalTracker(&verticalEncoder, TRACKING_WHEELS, VERTICAL_OFFSET);
-lemlib::TrackingWheel horizontalTracker(&horizontalEncoder, TRACKING_WHEELS, HORIZONTAL_OFFSET);
+lemlib::TrackingWheel verticalTracker(&verticalEncoder, 2, VERTICAL_OFFSET);
+lemlib::TrackingWheel horizontalTracker(&horizontalEncoder, 2.75, HORIZONTAL_OFFSET);
 
-lemlib::OdomSensors sensors(&verticalTracker, nullptr, &horizontalTracker, nullptr, &imu);
+lemlib::OdomSensors sensors(nullptr, &verticalTracker, &horizontalTracker, nullptr, &imu);
 
 lemlib::Drivetrain drivetrain(
     &leftDrive, 
@@ -19,9 +19,9 @@ lemlib::Drivetrain drivetrain(
     HORIZONTAL_DRIFT
 );
 
-lemlib::ControllerSettings drivePID (12, // proportional gain (kP)
+lemlib::ControllerSettings drivePID (9.1, // proportional gain (kP)
                                             0, // integral gain (kI)
-                                            100, // derivative gain (kD)
+                                            67, // derivative gain (kD)
                                             0, // anti windup
                                             0, // small error range, in inches
                                             0, // small error range timeout, in milliseconds
@@ -30,9 +30,9 @@ lemlib::ControllerSettings drivePID (12, // proportional gain (kP)
                                             0 // maximum acceleration (slew)
 );
 
-lemlib::ControllerSettings turnPID(6.05, // proportional gain (kP)
+lemlib::ControllerSettings turnPID(5.9, // proportional gain (kP)
                                              0.0, // integral gain (kI)
-                                             48, // derivative gain (kD)
+                                             52, // derivative gain (kD)
                                              0, // anti windup
                                              0, // small error range, in degrees
                                              0, // small error range timeout, in milliseconds
@@ -41,13 +41,14 @@ lemlib::ControllerSettings turnPID(6.05, // proportional gain (kP)
                                              0 // maximum acceleration (slew)
 );
 
-lemlib::ExpoDriveCurve throttleCurve(5, 10, 1.019);
-lemlib::ExpoDriveCurve steerCurve(5, 10, 1.021);
+lemlib::ExpoDriveCurve throttleCurve(5, 10, 1.03);
+lemlib::ExpoDriveCurve steerCurve(5, 10, 1.025);
+
 lemlib::Chassis robot(
     drivetrain, 
     drivePID, 
     turnPID, 
-    sensors, 
+    sensors,
     &throttleCurve, 
     &steerCurve,
     &filter

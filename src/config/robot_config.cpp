@@ -19,6 +19,12 @@ pros::IMU imu(ports::IMU_PORT);
 pros::Rotation verticalEncoder(ports::VERTICAL_ENCODER_PORT);
 pros::Rotation horizontalEncoder(ports::HORIZONTAL_ENCODER_PORT);
 
+// Optical sensor up
+pros::Optical optical(ports::OPTICAL_PORT);
+
+//Optical sensor middle 
+pros::Optical park_opt(0);
+
 pros::Distance distance_right(ports::DISTANCE_RIGHT_PORT);
 pros::Distance distance_left(ports::DISTANCE_LEFT_PORT);
 pros::Distance distance_back(ports::DISTANCE_BACK_PORT);
@@ -27,6 +33,7 @@ pros::Distance distance_front(ports::DISTANCE_FRONT_PORT);
 pros::adi::Pneumatics loader(ports::LOADER_PORT, false);
 pros::adi::Pneumatics descore(ports::DESCORE_PORT, false);
 pros::adi::Pneumatics upScore(ports::UPSCORE_PORT, false);
+
 pros::adi::Pneumatics intake_upper(ports::INTAKE_UPPER_PORT, false);
-pros::adi::Pneumatics encoder_upper(ports::ENCODER_UPPER_PORT, true);
+pros::adi::Motor encoder_upper(ports::ENCODER_UPPER_PORT);
 pros::adi::Pneumatics middle_descore(ports::MIDDLE_DESCORE_PORT, false);

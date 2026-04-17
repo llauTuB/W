@@ -9,7 +9,7 @@
 #include <vector>
 #include <random>
 
-namespace cavalry {
+namespace daniyar {
 
 class ParticleFilterSettings {
 public:

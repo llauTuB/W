@@ -29,9 +29,12 @@ extern pros::Distance distance_left;
 extern pros::Distance distance_back;
 extern pros::Distance distance_front;
 
+extern pros::Optical optical;
+extern pros::Optical park_opt;
+
 extern pros::adi::Pneumatics loader;
 extern pros::adi::Pneumatics descore;
 extern pros::adi::Pneumatics middle_descore;
 extern pros::adi::Pneumatics upScore;
-extern pros::adi::Pneumatics encoder_upper;
+extern pros::adi::Motor encoder_upper;
 extern pros::adi::Pneumatics intake_upper;

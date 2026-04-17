@@ -8,26 +8,26 @@ lemlib::Pose distanceLeftOffset(DISTANCE_LEFT_OFFSET_X, DISTANCE_LEFT_OFFSET_Y, 
 lemlib::Pose distanceFrontOffset(DISTANCE_FRONT_OFFSET_X, DISTANCE_FRONT_OFFSET_Y, DISTANCE_FRONT_OFFSET_T);
 lemlib::Pose distanceBackOffset(DISTANCE_BACK_OFFSET_X, DISTANCE_BACK_OFFSET_Y, DISTANCE_BACK_OFFSET_T);
 
-cavalry::DistanceSensor distanceSensorRight(ports::DISTANCE_RIGHT_PORT, distanceRightOffset, DISTANCE_RIGHT_CONSTANT);
-cavalry::DistanceSensor distanceSensorLeft(ports::DISTANCE_LEFT_PORT, distanceLeftOffset, DISTANCE_LEFT_CONSTANT);
-cavalry::DistanceSensor distanceSensorFront(ports::DISTANCE_FRONT_PORT, distanceFrontOffset, DISTANCE_FRONT_CONSTANT);
-cavalry::DistanceSensor distanceSensorBack(ports::DISTANCE_BACK_PORT, distanceBackOffset, DISTANCE_BACK_CONSTANT);
+daniyar::DistanceSensor distanceSensorRight(ports::DISTANCE_RIGHT_PORT, distanceRightOffset, DISTANCE_RIGHT_CONSTANT);
+daniyar::DistanceSensor distanceSensorLeft(ports::DISTANCE_LEFT_PORT, distanceLeftOffset, DISTANCE_LEFT_CONSTANT);
+daniyar::DistanceSensor distanceSensorFront(ports::DISTANCE_FRONT_PORT, distanceFrontOffset, DISTANCE_FRONT_CONSTANT);
+daniyar::DistanceSensor distanceSensorBack(ports::DISTANCE_BACK_PORT, distanceBackOffset, DISTANCE_BACK_CONSTANT);
 
-cavalry::ParticleFilterSettings particleFilterSettings(
+daniyar::ParticleFilterSettings particleFilterSettings(
     NUM_PARTICLES,
     1.0,
     1.0,
-    3.0,
-    2.0,
-    1000.0,
-    5.0
+    1.0,
+    1.0,
+    50.0,
+    20.0
 );
 
-cavalry::ParticleFilterSensors particleFilterSensors(
+daniyar::ParticleFilterSensors particleFilterSensors(
     &imu, 
     {&distanceSensorRight, &distanceSensorLeft, &distanceSensorFront, &distanceSensorBack},
-    &verticalTracker,
+    nullptr,
     &horizontalTracker
 );
 
-cavalry::ParticleFilter filter(particleFilterSensors, particleFilterSettings, true);
+daniyar::ParticleFilter filter(particleFilterSensors, particleFilterSettings, true);

@@ -346,7 +346,7 @@ class Chassis {
          */
         Chassis(Drivetrain drivetrain, ControllerSettings linearSettings, ControllerSettings angularSettings,
                 OdomSensors sensors, DriveCurve* throttleCurve = &defaultDriveCurve,
-                DriveCurve* steerCurve = &defaultDriveCurve, cavalry::ParticleFilter* particleFilter = nullptr);
+                DriveCurve* steerCurve = &defaultDriveCurve, daniyar::ParticleFilter* particleFilter = nullptr);
         /**
          * @brief Calibrate the chassis sensors. THis should be called in the initialize function
          *
@@ -931,7 +931,7 @@ class Chassis {
         OdomSensors sensors;
         DriveCurve* throttleCurve;
         DriveCurve* steerCurve;
-        cavalry::ParticleFilter* particleFilter;
+        daniyar::ParticleFilter* particleFilter;
 
         ExitCondition lateralLargeExit;
         ExitCondition lateralSmallExit;

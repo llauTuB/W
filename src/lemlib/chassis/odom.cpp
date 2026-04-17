@@ -14,7 +14,7 @@
 pros::Task* trackingTask = nullptr;
 
 // global variables
-cavalry::ParticleFilter* pFilter = nullptr;
+daniyar::ParticleFilter* pFilter = nullptr;
 lemlib::OdomSensors odomSensors(nullptr, nullptr, nullptr, nullptr, nullptr); // the sensors to be used for odometry
 lemlib::Drivetrain drive(nullptr, nullptr, 0, 0, 0, 0); // the drivetrain to be used for odometry
 lemlib::Pose odomPose(0, 0, 0); // the pose of the robot
@@ -29,7 +29,7 @@ float prevHorizontal1 = 0;
 float prevHorizontal2 = 0;
 float prevImu = 0;
 
-void lemlib::setSensors(cavalry::ParticleFilter* filter, lemlib::OdomSensors sensors, lemlib::Drivetrain drivetrain) {
+void lemlib::setSensors(daniyar::ParticleFilter* filter, lemlib::OdomSensors sensors, lemlib::Drivetrain drivetrain) {
     odomSensors = sensors;
     drive = drivetrain;
     pFilter = filter;

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <limits>
 
-namespace cavalry{
+namespace daniyar{
 
 struct Point {
     float x, y;
@@ -89,4 +89,4 @@ namespace Geom {
     }
 }
 
-} // namespace cavalry
+} // namespace daniyar

@@ -27,7 +27,7 @@ lemlib::Drivetrain::Drivetrain(pros::MotorGroup* leftMotors, pros::MotorGroup* r
       horizontalDrift(horizontalDrift) {}
 
 lemlib::Chassis::Chassis(Drivetrain drivetrain, ControllerSettings linearSettings, ControllerSettings angularSettings,
-                         OdomSensors sensors, DriveCurve* throttleCurve, DriveCurve* steerCurve, cavalry::ParticleFilter* particleFilter)
+                         OdomSensors sensors, DriveCurve* throttleCurve, DriveCurve* steerCurve, daniyar::ParticleFilter* particleFilter)
     : drivetrain(drivetrain),
       lateralSettings(linearSettings),
       angularSettings(angularSettings),

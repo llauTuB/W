@@ -4,7 +4,7 @@
 #include "lemlib/pose.hpp"
 #include "lemlib/geom.hpp"
 
-namespace cavalry {
+namespace daniyar {
 constexpr auto DIST_WALL_FROM_ZERO = 72.0;
 constexpr auto PARTICLE_UNCERTAINTY = 0.1f;
 constexpr auto METERS_TO_INCHES = 39.3701;
@@ -56,4 +56,4 @@ private:
     float normal_pdf(const float x, const float mean, const float stddev);
     float fast_normal_pdf(const float x);
 };
-} // namespace cavalry
+} // namespace daniyar

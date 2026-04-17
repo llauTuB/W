@@ -9,13 +9,13 @@ extern lemlib::Pose distanceLeftOffset;
 extern lemlib::Pose distanceFrontOffset;
 extern lemlib::Pose distanceBackOffset;
 
-extern cavalry::DistanceSensor distanceSensorRight;
-extern cavalry::DistanceSensor distanceSensorLeft;
-extern cavalry::DistanceSensor distanceSensorFront;
-extern cavalry::DistanceSensor distanceSensorBack;
+extern daniyar::DistanceSensor distanceSensorRight;
+extern daniyar::DistanceSensor distanceSensorLeft;
+extern daniyar::DistanceSensor distanceSensorFront;
+extern daniyar::DistanceSensor distanceSensorBack;
 
-extern cavalry::ParticleFilterSettings particleFilterSettings;
+extern daniyar::ParticleFilterSettings particleFilterSettings;
 
-extern cavalry::ParticleFilterSensors particleFilterSensors;
+extern daniyar::ParticleFilterSensors particleFilterSensors;
 
-extern cavalry::ParticleFilter filter;
+extern daniyar::ParticleFilter filter;

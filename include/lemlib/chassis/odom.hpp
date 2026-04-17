@@ -10,7 +10,7 @@ namespace lemlib {
  * @param particleFilter the particle filter to be used
  * @param drivetrain drivetrain to be used
  */
-void setSensors(cavalry::ParticleFilter* particleFilter, lemlib::OdomSensors sensors, lemlib::Drivetrain drivetrain);
+void setSensors(daniyar::ParticleFilter* particleFilter, lemlib::OdomSensors sensors, lemlib::Drivetrain drivetrain);
 /**
  * @brief Get the pose of the robot
  *

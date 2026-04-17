@@ -3,7 +3,7 @@
 #include <cmath>
 #include <algorithm>
 
-namespace cavalry {
+namespace daniyar {
 
 ParticleFilter::ParticleFilter(ParticleFilterSensors sensors, ParticleFilterSettings settings, bool enabled) : settings(settings), randomGenerator(std::random_device{}()) {
     set_enabled(enabled);
@@ -183,8 +183,8 @@ bool ParticleFilter::is_enabled() {
 
 
 void ParticleFilter::create_distributions(float deltaOdomVertical, float deltaOdomHorizontal, float currentTheta) {
-    const float BASE_VERTICAL_NOISE = 0.5f; 
-    const float BASE_HORIZONTAL_NOISE = 0.5f;
+    const float BASE_VERTICAL_NOISE = 0.3f; 
+    const float BASE_HORIZONTAL_NOISE = 0.3f;
 
     float vNoiseSpread = BASE_VERTICAL_NOISE + (settings.verticalNoise * std::abs(deltaOdomVertical));
     verticalDistribution = std::uniform_real_distribution<>(deltaOdomVertical - vNoiseSpread, 
@@ -321,4 +321,4 @@ bool ParticleFilter::out_of_field(const std::pair<float, float>& particle) {
         || particle.second > DIST_WALL_FROM_ZERO;
 }
 
-} // namespace cavalry
+} // namespace daniyar

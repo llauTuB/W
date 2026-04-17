@@ -1,6 +1,6 @@
 #include "lemlib/distancesensor.hpp"
 
-void cavalry::DistanceSensor::update() {
+void daniyar::DistanceSensor::update() {
     const auto measuredMM = distance.get_distance();
     const auto measuredInches = static_cast<float>(measuredMM) / 1000.0f * METERS_TO_INCHES;
 
@@ -10,7 +10,7 @@ void cavalry::DistanceSensor::update() {
     standardDeviation = calculate_std_dev(measured);
 }
 
-std::optional<double> cavalry::DistanceSensor::p(const lemlib::Pose& particle, const std::vector<Circle>& circles, const std::vector<Polygon>& polygons) {
+std::optional<double> daniyar::DistanceSensor::p(const lemlib::Pose& particle, const std::vector<Circle>& circles, const std::vector<Polygon>& polygons) {
     if (!validReading) {
 		return std::nullopt;
 	}
@@ -63,7 +63,7 @@ std::optional<double> cavalry::DistanceSensor::p(const lemlib::Pose& particle, c
     return normal_pdf(zScore, 0, 1);
 }
 
-float cavalry::DistanceSensor::calculate_std_dev(float measured) {
+float daniyar::DistanceSensor::calculate_std_dev(float measured) {
     if (measured < 8.0f) {
         return 0.05f * measured;
     }
@@ -71,11 +71,11 @@ float cavalry::DistanceSensor::calculate_std_dev(float measured) {
     return 0.2f * measured * std::sqrt(confidence / 64.0f);
 }
 
-float cavalry::DistanceSensor::normal_pdf(const float x, const float mean, const float stddev) {
+float daniyar::DistanceSensor::normal_pdf(const float x, const float mean, const float stddev) {
     return (1.0f / (stddev * std::sqrt(2.0f * M_PI))) * std::exp(-0.5f * ((x - mean) / stddev) * ((x - mean) / stddev));
 }
 
-float cavalry::DistanceSensor::fast_normal_pdf(const float x) {
+float daniyar::DistanceSensor::fast_normal_pdf(const float x) {
     // Exit if z is too large for approximation
     if (std::abs(x) > 1.525f) {
         return PARTICLE_UNCERTAINTY;

@@ -4,9 +4,10 @@
 #include "config/mcl_config.hpp"
 #include "config/lemlib_config.hpp"
 #include "globals/all_const.hpp" // IWYU pragma: keep
+#include "utils/autons.hpp"
+#include "utils/distance_reset.hpp"
 
 
-pros::Controller master(pros::E_CONTROLLER_MASTER);
 const std::vector<std::string> STATE_MAP = {
     "STORE",
     "HIGH",
@@ -51,8 +52,9 @@ void initialize() {
 
     pros::lcd::initialize(); // initialize brain screen
     robot.calibrate(); // calibrate sensors
-
     master = pros::Controller(pros::E_CONTROLLER_MASTER);
+
+
     // the default rate is 50. however, if you need to change the rate, you
     // can do the following.
     // lemlib::bufferedStdout().setRate(...);
@@ -68,19 +70,28 @@ void initialize() {
             pros::lcd::print(0, "X: %f", robot.getPose().x); // x
             pros::lcd::print(1, "Y: %f", robot.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", robot.getPose().theta); // heading
-            pros::lcd::print(3, "Init: %s", filter.is_initialized() ? "Enabled" : "Disabled"); // heading
-            pros::lcd::print(4, "Enabled: %s", filter.is_enabled() ? "Enabled" : "Disabled"); // heading
-            pros::lcd::print(5, "MCL Pose: (%.2f, %.2f, %.2f)", filter.get_prediction().x, filter.get_prediction().y, filter.get_prediction().theta); // number of particles
-            master.print(0, 0, "X: %.2f Y: %.2f", robot.getPose().x, robot.getPose().y);
+            pros::lcd::print(3, "Left side temp: %f", leftDrive.get_temperature_all()[1]);
+			pros::lcd::print(4, "Right side temp:: %f", rightDrive.get_temperature_all()[1]);
 
-           
+			pros::lcd::print(6, "Intake_Stage1 temp:: %f", intakeStage1.get_temperature());
+    		pros::lcd::print(7, "Intake_Stage2 temp:: %f", intakeStage2.get_temperature());        
+    		pros::lcd::print(8, "Intake_Stage3 temp:: %f", intakeStage3.get_temperature());        
 
+         // pros::lcd::print(3, "Init: %s", filter.is_initialized() ? "Enabled" : "Disabled"); // heading
+         // pros::lcd::print(4, "Enabled: %s", filter.is_enabled() ? "Enabled" : "Disabled"); // heading
+            // pros::lcd::print(5, "MCL Pose: (%.2f, %.2f, %.2f)", filter.get_prediction().x, filter.get_prediction().y, filter.get_prediction().theta); // number of particles
+
+            master.print(0, 0, "X:%.2fY:%.2fT:%.2f", robot.getPose().x, robot.getPose().y, robot.getPose().theta);
+         // master.print(0, 0, "T: %.2f", robot.getPose().theta);
+ 
             // log position telemetry
             lemlib::telemetrySink()->info("robot pose: {}", robot.getPose());
             // delay to save resources
             pros::delay(50);
         }
     });
+
+    // pros::Task auto_intake_task(autoIntakeTaskFn);
 }
 
 /**
@@ -95,12 +106,45 @@ void competition_initialize() {}
 
 
 void autonomous() {
-   filter.set_enabled(true);
-   filter.set_starting_pose(lemlib::Pose(48, 8, 0), true);
-   robot.moveToPoint(48, 46, 2000, {true, 100, 10, 1});
-   robot.turnToHeading(90, 700, {lemlib::AngularDirection::AUTO, 127, 10, 1});
-   loader.set_value(127);
-   robot.moveToPoint(55, 48, 10000, {true, 70, 10, 1});
+    optical.set_led_pwm(100);
+    optical.set_integration_time(5.0);
+
+    // robot.turnToHeading(90, 1000);
+    // pros::delay(3000);
+    // robot.turnToHeading(270, 10000);
+    // robot.setPose(0,0,0);
+    // robot.turnToHeading(90, 1000, {lemlib::AngularDirection::AUTO, 127, 0, 0});
+    // pros::delay(3000);
+    // robot.turnToHeading(270, 1000, {lemlib::AngularDirection::CCW_COUNTERCLOCKWISE, 100, 0, 0});
+    // pros::delay(1000);
+    // robot.turnToHeading(0, 50000, {lemlib::AngularDirection::AUTO, 127, 0, 0});
+
+    // awp_middle();
+    // left43();   
+    // right43();
+    // awp_2long_1middle();
+    
+    // rushright6undergoal();
+    // rushright_6loader();
+    // rushright9();
+
+    // rushleft6loader();
+    // rushleft9();
+
+    // solo_awp_15_right_1longgoal_9();
+    // solo_awp_13_right_1longgoal_9();
+
+    // playoff_push_proga_left();
+    // playoff_proga_left();
+
+
+    // playoff_push_proga_right();
+
+    skills(); 
+
+    // encoder_upper.set_value(127);
+
+
 }
 
 
@@ -111,23 +155,33 @@ void opcontrol() {
     bool middleDescoreState = false;
     bool upScoreDescoreState = false;
     bool upIntakeState = false;
+    autoIntakeActive = false;
+    // encoder_upper.set_value(127);
+    //    robot.setPose(-48, 10, 0);
+
+
+    optical.set_led_pwm(100);
+    optical.set_integration_time(5.0);
 
     while (true) {
         int leftY = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
         int rightX = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
         robot.arcade(leftY, rightX);
 
-        // master.print(0, 0, "X: %.2f Y: %.2f", robot.getPose().x, robot.getPose().y);
+        double hue = optical.get_hue();
+        double prox = optical.get_proximity();
+        bool isRed = (prox > 140) && (hue > 340 || hue < 20);
+        bool isBlue = (prox > 140) && (hue > 190 && hue < 250);
 
         if (master.get_digital_new_press(FILTER_TOGGLE)) {
             filter.set_enabled(filter.is_enabled() ? false : true);
         }
 
-
+        
         if (master.get_digital(INTAKE_STATE_LOAD)) {
             intakeStage1.move_voltage(12000);
             intakeStage2.move_voltage(12000);
-            intakeStage3.move_voltage(12000);
+        intakeStage3.move_voltage(12000);
         } 
         else if (master.get_digital(INTAKE_STATE_LOWSCORE)) {
             intakeStage1.move_voltage(-12000);
@@ -138,11 +192,14 @@ void opcontrol() {
             intakeStage1.move_voltage(12000);
             intakeStage2.move_voltage(8000);
             intakeStage3.move_voltage(-7000);
+            middle_descore.set_value(1);
         } 
         else {
             intakeStage1.move_voltage(0);
             intakeStage2.move_voltage(0);
             intakeStage3.move_voltage(0);
+            middle_descore.set_value(0);
+
         }
      
 
@@ -158,7 +215,7 @@ void opcontrol() {
 
         if (master.get_digital_new_press(UPSCORE_DESCORE_TOGGLE)) {
             upScoreDescoreState = !upScoreDescoreState;                 
-            upScore.set_value(upScoreDescoreState);    
+            upScore.set_value(!upScoreDescoreState);    
             descore.set_value(upScoreDescoreState);
         }
 
@@ -169,7 +226,8 @@ void opcontrol() {
 
         if (master.get_digital_new_press(ENCODER_UPPER_TOGGLE)) {
             upEncoderState = !upEncoderState;
-            encoder_upper.set_value(upEncoderState); 
+            if (upEncoderState) encoder_upper.set_value(127);
+            else  encoder_upper.set_value(0);
         }  
 
 
